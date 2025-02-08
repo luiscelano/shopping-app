@@ -1,6 +1,8 @@
-package com.services.accounts.utils;
+package com.services.orders.utils;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +14,7 @@ public class JwtUtil {
     private final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 hour
 
     private static final Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+
 
     public static Claims getClaimsFromToken(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
