@@ -1,9 +1,10 @@
 import { createBrowserRouter, redirect } from 'react-router-dom'
-import Home from 'src/views/app/home'
+import HomePage from 'src/views/app/home'
 import Profile from 'src/views/app/profile'
 import Auth from 'src/views/auth'
 import AppLayout from 'src/components/AppLayout'
 import Posts from 'src/views/app/posts'
+import CheckoutPage from 'src/views/app/checkout'
 
 const routes = createBrowserRouter([
   {
@@ -12,11 +13,11 @@ const routes = createBrowserRouter([
     children: [
       {
         path: '',
-        loader: () => redirect('home')
+        Component: HomePage
       },
       {
-        path: 'home',
-        Component: Home
+        path: 'checkout',
+        Component: CheckoutPage
       },
       {
         path: 'profile',
