@@ -105,7 +105,6 @@ public class UserService {
                 throw new Exception("usuario no existe");
             }
 
-            // generar token y registrarlo
             String token = generateRandomCode();
 
             RecoveryTokenEntity recoveryTokenEntity = new RecoveryTokenEntity();

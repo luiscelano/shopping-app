@@ -10,8 +10,12 @@ import Menu from '@mui/material/Menu'
 import { useSelector } from 'react-redux'
 import * as cartSelectors from 'src/redux/cart/selectors'
 import { Badge } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
+import { getIsAuthenticated } from 'src/utils/storage'
 
 const NavigationBarV2 = () => {
+  const isAuthenticated = getIsAuthenticated()
+  const navigate = useNavigate()
   const cartItems = useSelector(cartSelectors.getCartItemsSelector)
 
   const totalItemsQuantity = Array.from(cartItems || []).reduce((sum, current) => sum + current.quantity, 0)
@@ -20,18 +24,27 @@ const NavigationBarV2 = () => {
   const [anchorEl, setAnchorEl] = React.useState(null)
 
   const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget)
+    if (isAuthenticated) {
+      setAnchorEl(event.currentTarget)
+    } else {
+      navigate('/auth/login')
+    }
   }
 
   const handleClose = () => {
     setAnchorEl(null)
   }
 
+  const handleSignOut = () => {
+    localStorage.removeItem('accessToken')
+    window.location.reload()
+  }
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="relative">
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography href="" variant="h6" component="a" sx={{ flexGrow: 1, textDecoration: 'none', color: 'inherit' }}>
             TIGO SHOP
           </Typography>
           {auth && (
@@ -43,36 +56,40 @@ const NavigationBarV2 = () => {
                 aria-haspopup="true"
                 onClick={handleMenu}
                 color="inherit">
-                <AccountCircle />
+                <Badge color="secondary" variant="dot" invisible={!isAuthenticated}>
+                  <AccountCircle />
+                </Badge>
               </IconButton>
               <IconButton
                 size="large"
                 aria-label="cart"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
-                onClick={handleMenu}
+                onClick={() => navigate('/checkout')}
                 color="inherit">
                 <Badge badgeContent={totalItemsQuantity} color="secondary">
                   <ShoppingCart />
                 </Badge>
               </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right'
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right'
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}>
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-              </Menu>
+              {isAuthenticated && (
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right'
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right'
+                  }}
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}>
+                  <MenuItem onClick={() => navigate('/profile')}>Mi cuenta</MenuItem>
+                  <MenuItem onClick={handleSignOut}>Cerrar sesión</MenuItem>
+                </Menu>
+              )}
             </div>
           )}
         </Toolbar>

@@ -1,10 +1,12 @@
-import { createBrowserRouter, redirect } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom'
 import HomePage from 'src/views/app/home'
 import Profile from 'src/views/app/profile'
-import Auth from 'src/views/auth'
 import AppLayout from 'src/components/AppLayout'
-import Posts from 'src/views/app/posts'
 import CheckoutPage from 'src/views/app/checkout'
+import LoginPage from 'src/views/auth/login'
+import SignUpPage from 'src/views/auth/signup'
+import RequestPasswordRecoveryPage from 'src/views/auth/request-password'
+import ResetPasswordPage from 'src/views/auth/reset-password'
 
 const routes = createBrowserRouter([
   {
@@ -24,12 +26,28 @@ const routes = createBrowserRouter([
         Component: Profile
       },
       {
-        path: 'posts',
-        Component: Posts
+        path: '/auth',
+        children: [
+          {
+            path: 'login',
+            Component: LoginPage
+          },
+          {
+            path: 'signup',
+            Component: SignUpPage
+          },
+          {
+            path: 'request-password',
+            Component: RequestPasswordRecoveryPage
+          },
+          {
+            path: 'reset-password',
+            Component: ResetPasswordPage
+          }
+        ]
       }
     ]
-  },
-  { path: '/auth', Component: Auth }
+  }
 ])
 
 export default routes

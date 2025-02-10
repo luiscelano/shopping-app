@@ -5,7 +5,7 @@ import withProducts from 'src/containers/products/withProducts'
 
 const HomePage = (props) => {
   return (
-    <Container>
+    <Container maxWidth="lg">
       <Grid2 container spacing={3}>
         <Grid2 size={12}>
           <ProductItems products={props.products} />

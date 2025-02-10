@@ -1,5 +1,6 @@
 import axios from 'axios'
 import config from 'src/config/constants'
+import { getAccessToken } from 'src/utils/storage'
 
 const { API_URL } = config
 
@@ -12,7 +13,7 @@ const httpClient = axios.create({
 
 httpClient.interceptors.request.use(
   async (config) => {
-    const token = localStorage.getItem('accessToken')
+    const token = getAccessToken()
 
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`
