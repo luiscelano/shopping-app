@@ -1,7 +1,7 @@
 import { Button, Container, Grid2, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import httpClient from 'src/utils/httpClient'
-import { getIsAuthenticated, setAccessToken } from 'src/utils/storage'
+import { getIsAuthenticated, setAccessToken, setProfile } from 'src/utils/storage'
 import getHttpError from 'src/utils/getHttpError'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
@@ -35,7 +35,8 @@ const LoginPage = () => {
         const response = await httpClient.post('/auth/login', values)
         if (response.status === 200) {
           setIsSubmitting(false)
-          setAccessToken(response.data.accessToken)
+          setAccessToken(response.data?.accessToken)
+          setProfile(response.data?.user)
         }
       } catch (error) {
         const errorMessage = getHttpError(error).message

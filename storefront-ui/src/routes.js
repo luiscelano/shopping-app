@@ -1,12 +1,16 @@
 import { createBrowserRouter } from 'react-router-dom'
 import HomePage from 'src/views/app/home'
-import Profile from 'src/views/app/profile'
+import ProfilePage from 'src/views/app/account/profile'
 import AppLayout from 'src/components/AppLayout'
 import CheckoutPage from 'src/views/app/checkout'
 import LoginPage from 'src/views/auth/login'
 import SignUpPage from 'src/views/auth/signup'
 import RequestPasswordRecoveryPage from 'src/views/auth/request-password'
 import ResetPasswordPage from 'src/views/auth/reset-password'
+import { AccountPage } from 'src/views/app/account'
+import redirectIfAuthenticated from 'src/loaders/redirectIfAuthenticated'
+import OrdersPage from 'src/views/app/account/orders'
+import OrderConfirmationPage from 'src/views/app/order-confirmation'
 
 const routes = createBrowserRouter([
   {
@@ -22,8 +26,23 @@ const routes = createBrowserRouter([
         Component: CheckoutPage
       },
       {
-        path: 'profile',
-        Component: Profile
+        path: 'order-confirmation',
+        Component: OrderConfirmationPage
+      },
+      {
+        path: '/account',
+        Component: AccountPage,
+        loader: redirectIfAuthenticated,
+        children: [
+          {
+            path: 'profile',
+            Component: ProfilePage
+          },
+          {
+            path: 'orders',
+            Component: OrdersPage
+          }
+        ]
       },
       {
         path: '/auth',

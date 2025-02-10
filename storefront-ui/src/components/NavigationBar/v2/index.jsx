@@ -86,7 +86,7 @@ const NavigationBarV2 = () => {
                   }}
                   open={Boolean(anchorEl)}
                   onClose={handleClose}>
-                  <MenuItem onClick={() => navigate('/profile')}>Mi cuenta</MenuItem>
+                  <MenuItem onClick={() => navigate('/account/profile')}>Mi cuenta</MenuItem>
                   <MenuItem onClick={handleSignOut}>Cerrar sesión</MenuItem>
                 </Menu>
               )}
