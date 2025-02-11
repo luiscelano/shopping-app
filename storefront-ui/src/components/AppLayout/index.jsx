@@ -1,7 +1,7 @@
 import React from 'react'
-import NavigationBar from 'src/components/NavigationBar'
 import * as styles from './styles'
 import { Outlet } from 'react-router-dom'
+import NavigationBar from 'src/components/NavigationBar'
 
 const AppLayout = () => {
   return (

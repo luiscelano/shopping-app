@@ -48,8 +48,8 @@ public class UserService {
             UserEntity userEntityResult = this.userRepository.save(userEntity);
 
             Map<String, Object> response = new HashMap<>();
-            response.put("userId", userEntityResult.getUserId());
              response.put("accessToken", this.jwt.generateToken(userEntityResult.getUserId()));
+             response.put("user", getMappedUser(userEntityResult));
             return response;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
@@ -91,10 +91,22 @@ public class UserService {
             Map<String, Object> response = new HashMap<>();
 
             response.put("accessToken", this.jwt.generateToken(existingUser.get().getUserId()));
+            response.put("user", getMappedUser(existingUser.get()));
             return response;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private Map<String, Object> getMappedUser(UserEntity user) {
+        Map<String, Object> output = new HashMap<>();
+
+        output.put("firstName", user.getFirstName());
+        output.put("lastName", user.getLastName());
+        output.put("shippingAddress", user.getShippingAddress());
+        output.put("birthDate", user.getBirthDate());
+        output.put("email", user.getEmail());
+        return output;
     }
 
     public String requestPasswordRecovery(String email) {
@@ -105,7 +117,6 @@ public class UserService {
                 throw new Exception("usuario no existe");
             }
 
-            // generar token y registrarlo
             String token = generateRandomCode();
 
             RecoveryTokenEntity recoveryTokenEntity = new RecoveryTokenEntity();

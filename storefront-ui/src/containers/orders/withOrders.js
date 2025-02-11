@@ -3,20 +3,20 @@ import withSpinner from 'src/containers/spinner/withSpinner'
 import httpClient from 'src/utils/httpClient'
 import withError from 'src/containers/error/withError'
 
-const withPosts = (Component) => (props) => {
-  const [isLoading, setIsLoading] = useState(false)
+const withOrders = (Component) => (props) => {
+  const [isLoading, setIsLoading] = useState(true)
   const [errorState, setErrorState] = useState({
     failed: false,
     message: null
   })
-  const [posts, setPosts] = useState(null)
-  const postsRef = useRef(false)
+  const [orders, setOrders] = useState(null)
+  const ordersRef = useRef(false)
 
-  const getPosts = useCallback(async () => {
+  const getOrders = useCallback(async () => {
     try {
-      const response = await httpClient.get('/v2/posts')
+      const response = await httpClient.get('/orders')
       if (response.status === 200) {
-        setPosts(response.data.posts)
+        setOrders(response.data)
       }
     } catch (error) {
       console.error('httpClient error:', error)
@@ -28,19 +28,19 @@ const withPosts = (Component) => (props) => {
   }, [])
 
   useEffect(() => {
-    if (postsRef.current) return
-    postsRef.current = true
+    if (ordersRef.current) return
+    ordersRef.current = true
     setIsLoading(true)
-    getPosts()
-  }, [getPosts])
+    getOrders()
+  }, [getOrders])
 
   useEffect(() => {
-    if (isLoading && (posts || errorState.failed)) setIsLoading(false)
-  }, [posts, errorState, isLoading])
+    if (isLoading && (orders || errorState.failed)) setIsLoading(false)
+  }, [orders, errorState, isLoading])
 
-  const componentProps = { ...props, posts }
+  const componentProps = { ...props, orders }
 
   return withSpinner(isLoading)(withError(errorState.failed, errorState.message)(Component))(componentProps)
 }
 
-export default withPosts
+export default withOrders

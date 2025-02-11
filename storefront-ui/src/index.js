@@ -2,22 +2,47 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
 import { Provider } from 'react-redux'
-import setupStore from './redux/store'
+import store from './redux/store'
 import reportWebVitals from './reportWebVitals'
 import { ThemeProvider, createGlobalStyle } from 'styled-components'
 import globalStyles from 'src/config/globalStyles'
 import theme from 'src/config/theme'
-
-const store = setupStore()
+import { SnackbarProvider } from 'notistack'
+import { createTheme, ThemeProvider as MaterialThemeProvider } from '@mui/material/styles'
 
 const GlobalStyle = createGlobalStyle`${globalStyles}`
+
+const themeUITheme = createTheme({
+  palette: {
+    primary: {
+      main: '#000000'
+    },
+    secondary: {
+      main: '#00c8ff'
+    }
+  },
+  typography: {
+    fontFamily: 'Arial, sans-serif',
+    h1: {
+      fontSize: '2rem',
+      fontWeight: 700
+    },
+    body1: {
+      fontSize: '1rem'
+    }
+  }
+})
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <App />
+        <SnackbarProvider>
+          <MaterialThemeProvider theme={themeUITheme}>
+            <App />
+          </MaterialThemeProvider>
+        </SnackbarProvider>
         <GlobalStyle />
       </ThemeProvider>
     </Provider>

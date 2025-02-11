@@ -1,24 +1,36 @@
-import React from 'react'
-import { useDispatch } from 'react-redux'
-import * as counterActions from 'src/redux/counter/actions'
-import withExampleContent from 'src/containers/withExampleContent'
+import React, { useState } from 'react'
+import { Container, Grid2, TextField } from '@mui/material'
+import ProductItems from 'src/components/ProductItems'
+import withProducts from 'src/containers/products/withProducts'
 
-const Home = () => {
-  const dispatch = useDispatch()
-
+const HomePage = (props) => {
+  const [productsResult, setProductsResult] = useState(props.products)
+  const handleProductSearch = (event) => {
+    const value = event.target.value
+    if (value?.length) {
+      setProductsResult(
+        Array.from(props.products || []).filter(
+          (item) =>
+            item.title.toLowerCase().includes(value.toLowerCase()) ||
+            item.description.toLowerCase().includes(value.toLowerCase())
+        )
+      )
+    } else {
+      setProductsResult(props.products)
+    }
+  }
   return (
-    <>
-      <button aria-label="Increment value" onClick={() => dispatch(counterActions.incrementCounter())}>
-        Increment
-      </button>
-      <button aria-label="Decrement value" onClick={() => dispatch(counterActions.decrementCounter())}>
-        Decrement
-      </button>
-      <button aria-label="IncrementByAmount value" onClick={() => dispatch(counterActions.incrementCounterByAmount(2))}>
-        Increment by amount of 2
-      </button>
-    </>
+    <Container maxWidth="lg">
+      <Grid2 container spacing={3} display="flex" flexDirection="column">
+        <Grid2 size="12" flexGrow={1}>
+          <TextField fullWidth label="Buscar artículo" onChange={handleProductSearch} />
+        </Grid2>
+        <Grid2 size="12">
+          <ProductItems products={productsResult} />
+        </Grid2>
+      </Grid2>
+    </Container>
   )
 }
 
-export default withExampleContent(Home)
+export default withProducts(HomePage)
