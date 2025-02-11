@@ -105,6 +105,7 @@ public class UserService {
         output.put("lastName", user.getLastName());
         output.put("shippingAddress", user.getShippingAddress());
         output.put("birthDate", user.getBirthDate());
+        output.put("email", user.getEmail());
         return output;
     }
 

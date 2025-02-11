@@ -13,6 +13,8 @@ export const AccountPage = () => {
         <Tab label="Mis pedidos" value={'/account/orders'}></Tab>
       </Tabs>
       <Container maxWidth="sm">
+        <br />
+        <br />
         <Outlet />
       </Container>
     </>

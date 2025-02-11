@@ -5,6 +5,15 @@ export const CardContainer = styled.div`
   flex-direction: row;
 `
 
+export const StatusBadge = styled.div`
+  color: #ffffff;
+  background-color: #ffbe00;
+  padding: 5px;
+  width: auto;
+  border-radius: 50px;
+  width: fit-content;
+`
+
 export const CardContent = styled.div`
   display: flex;
   flex-direction: column;

@@ -14,7 +14,7 @@ const withOrderActions = (Component) => (props) => {
   const cartItems = useSelector(cartSelectors.getCartItemsSelector)
   const navigate = useNavigate()
 
-  const [shippingAddress, setShippingAddress] = useState(profile.shippingAddress)
+  const [shippingAddress, setShippingAddress] = useState(profile?.shippingAddress || '')
   const [isPlacingOrder, setIsPlacingOrder] = useState(false)
 
   const placeOrder = useCallback(async () => {

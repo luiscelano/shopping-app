@@ -23,10 +23,16 @@ const ProductItem = ({ details }) => {
           <img src={details.imageURL} alt="img-product" height={200}></img>
           <styles.CardContent>
             <styles.CardBody>
-              <Typography variant="h5">{details?.title}</Typography>
+              <Typography variant="h6">{details?.title}</Typography>
               <Typography variant="body">{details?.description}</Typography>
-              <Typography variant="h6">{`Q${details?.price?.toFixed(2)}`}</Typography>
+              <Typography component="span" sx={{ color: 'text.secondary' }}>{`Q${details?.price?.toFixed(
+                2
+              )}`}</Typography>
+              <styles.StatusBadge>
+                <Typography component="span" variant="body2">{`Disponible: ${details.availability}`}</Typography>
+              </styles.StatusBadge>
             </styles.CardBody>
+            <br />
             <styles.CardBottom>
               <Button variant="contained" disableElevation sx={{ borderRadius: '50px' }} onClick={addProductToCart}>
                 Agregar al carrito
