@@ -1,7 +1,10 @@
 package com.services.orders.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +25,10 @@ public class OrderEntity {
     @Column(nullable = false)
     private String shippingAddress;
 
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
     public Float getOrderTotal() {
         return orderTotal;
     }
@@ -36,6 +43,10 @@ public class OrderEntity {
 
     public List<OrderItemEntity> getOrderItems() {
         return orderItems;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     @Column(nullable = false)

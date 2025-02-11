@@ -74,18 +74,17 @@ public class UserService {
     }
 
     public Map<String, Object> login(String email, String password) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
-
         try {
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
             Optional<UserEntity> existingUser = this.userRepository.findByEmail(email);
 
             if(existingUser.isEmpty()){
-                throw new Exception("correo y/o contraseña incorrectos");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"correo y/o contraseña incorrectos");
             }
 
             if(!encoder.matches(password, existingUser.get().getPassword())) {
-                throw new Exception("correo y/o contraseña incorrectos");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"correo y/o contraseña incorrectos");
             }
 
             Map<String, Object> response = new HashMap<>();
@@ -93,8 +92,8 @@ public class UserService {
             response.put("accessToken", this.jwt.generateToken(existingUser.get().getUserId()));
             response.put("user", getMappedUser(existingUser.get()));
             return response;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (ResponseStatusException e) {
+            throw new ResponseStatusException(e.getStatusCode(),e.getMessage());
         }
     }
 
