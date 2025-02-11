@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +27,7 @@ public class OrdersService {
     OrderRepository orderRepository;
 
     public OrderEntity placeOrder(PlaceOrderRequestDto input, Integer userId) {
-        try {
+
             List<OrderItemEntity> orderItems = new ArrayList<>();
 
             OrderEntity orderEntity = new OrderEntity();
@@ -47,9 +48,7 @@ public class OrdersService {
             orderEntity.setOrderItems(orderItems);
 
             return this.orderRepository.save(orderEntity);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+
     }
 
     private OrderItemEntity getOrderEntity(Integer quantity, Float price, OrderEntity order, ProductEntity productEntity) {
@@ -63,6 +62,9 @@ public class OrdersService {
     }
 
     public List<OrderEntity> getCustomerOrders(Integer userId) {
-        return this.orderRepository.findAllByUserId(userId);
+        List<OrderEntity> allByUserId = this.orderRepository.findAllByUserId(userId);
+        allByUserId.sort(Comparator.comparing(OrderEntity::getCreatedAt).reversed());
+        return allByUserId;
     }
+
 }
